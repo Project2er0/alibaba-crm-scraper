@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "阿里巴巴CRM客户采集工具",
+  "version": "1.1.0",
+  "description": "采集阿里巴巴国际站CRM客户列表数据并导出为Excel",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": [
+    "https://alicrm.alibaba.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://alicrm.alibaba.com/*"
+      ],
+      "js": ["content.js", "floating-panel.js"],
+      "css": ["floating-panel.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": []
+}
