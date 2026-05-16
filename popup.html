@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阿里CRM客户采集</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      width: 260px;
+      font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 13px;
+      background: #f5f7fa;
+      color: #333;
+    }
+    .header {
+      background: linear-gradient(135deg, #ff6b00, #ff9500);
+      color: white;
+      padding: 14px 16px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header .logo {
+      width: 32px;
+      height: 32px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .header-title { font-size: 15px; font-weight: 600; }
+    .header-subtitle { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+
+    .action-area {
+      padding: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-open {
+      background: linear-gradient(135deg, #ff6b00, #ff8c00);
+      color: white;
+    }
+
+    .btn-close {
+      background: #f0f5ff;
+      color: #1890ff;
+      border: 1px solid #d6e4ff;
+      margin-top: 10px;
+    }
+
+    .tip {
+      padding: 12px 16px;
+      background: #fffbe6;
+      border-top: 1px solid #ffe58f;
+      font-size: 11px;
+      color: #874d00;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">📊</div>
+    <div>
+      <div class="header-title">阿里CRM客户采集</div>
+      <div class="header-subtitle">点击下方按钮控制页面浮窗</div>
+    </div>
+  </div>
+
+  <!-- Action -->
+  <div class="action-area">
+    <button class="btn btn-open" id="toggleBtn">🚀 打开采集面板</button>
+  </div>
+
+  <!-- Tip -->
+  <div class="tip">
+    💡 点击上方按钮在页面中打开/关闭采集浮窗。浮窗不会被其他操作中断，右上角有关闭按钮。
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('toggleBtn');
+
+    toggleBtn.addEventListener('click', async () => {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (!tab) return;
+
+      // 先检查浮窗状态
+      let panelVisible = false;
+      try {
+        const state = await chrome.tabs.sendMessage(tab.id, { action: 'GET_PANEL_STATE' });
+        panelVisible = state?.visible;
+      } catch (e) {
+        // content script 可能还没加载
+      }
+
+      // 发送 toggle 消息
+      chrome.tabs.sendMessage(tab.id, { action: 'TOGGLE_PANEL' });
+
+      // 更新按钮文字
+      toggleBtn.textContent = panelVisible ? '🚀 打开采集面板' : '✕ 关闭采集面板';
+      toggleBtn.className = panelVisible ? 'btn btn-open' : 'btn btn-close';
+
+      // 关闭 popup
+      window.close();
+    });
+
+    // 初始化时检查浮窗状态
+    (async () => {
+      try {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (!tab) return;
+        const state = await chrome.tabs.sendMessage(tab.id, { action: 'GET_PANEL_STATE' });
+        if (state?.visible) {
+          toggleBtn.textContent = '✕ 关闭采集面板';
+          toggleBtn.className = 'btn btn-close';
+        }
+      } catch (e) {
+        // 忽略
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+/* ============================================================
+ * 阿里CRM客户采集 - 浮窗样式
+ * 注入到页面中，始终置顶显示
+ * ============================================================ */
+
+/* 浮窗容器 - 固定定位，最高层级 */
+#crm-collector-panel {
+  position: fixed !important;
+  top: 16px !important;
+  right: 16px !important;
+  z-index: 2147483647 !important;
+  width: 390px !important;
+  max-height: calc(100vh - 32px) !important;
+  overflow: hidden !important;
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif !important;
+  font-size: 13px !important;
+  background: #f5f7fa !important;
+  color: #333 !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: opacity 0.25s ease, transform 0.25s ease !important;
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+/* 隐藏状态 */
+#crm-collector-panel.crm-panel-hidden {
+  opacity: 0 !important;
+  transform: translateX(420px) !important;
+  pointer-events: none !important;
+}
+
+/* ---- Header ---- */
+#crm-collector-panel .crm-header {
+  background: linear-gradient(135deg, #ff6b00, #ff9500) !important;
+  color: white !important;
+  padding: 12px 44px 10px 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 12px 12px 0 0 !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  user-select: none !important;
+  cursor: move !important;
+}
+#crm-collector-panel .crm-header .crm-logo {
+  width: 30px !important;
+  height: 30px !important;
+  background: rgba(255,255,255,0.2) !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 16px !important;
+  flex-shrink: 0 !important;
+  pointer-events: none !important;
+}
+#crm-collector-panel .crm-header-title {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  pointer-events: none !important;
+}
+#crm-collector-panel .crm-header-subtitle {
+  font-size: 10px !important;
+  opacity: 0.85 !important;
+  margin-top: 1px !important;
+  pointer-events: none !important;
+}
+
+/* 关闭按钮 */
+#crm-collector-panel .crm-close-btn {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 28px !important;
+  height: 28px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: rgba(255,255,255,0.2) !important;
+  color: white !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background 0.2s !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+#crm-collector-panel .crm-close-btn:hover {
+  background: rgba(255,255,255,0.4) !important;
+}
+#crm-collector-panel .crm-close-btn:disabled {
+  opacity: 0.35 !important;
+  cursor: not-allowed !important;
+}
+
+/* 最小化按钮 */
+#crm-collector-panel .crm-minimize-btn {
+  position: absolute !important;
+  top: 8px !important;
+  right: 42px !important;
+  width: 28px !important;
+  height: 28px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: rgba(255,255,255,0.15) !important;
+  color: white !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background 0.2s !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+#crm-collector-panel .crm-minimize-btn:hover {
+  background: rgba(255,255,255,0.35) !important;
+}
+
+/* ---- 可滚动内容区 ---- */
+#crm-collector-panel .crm-body {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: calc(100vh - 120px) !important;
+  flex: 1 !important;
+}
+
+/* 最小化时隐藏 body */
+#crm-collector-panel.crm-minimized .crm-body {
+  display: none !important;
+}
+#crm-collector-panel.crm-minimized {
+  max-height: none !important;
+  height: auto !important;
+}
+
+/* ---- Status ---- */
+#crm-collector-panel .crm-status {
+  padding: 8px 14px !important;
+  font-size: 12px !important;
+  border-left: 3px solid #ccc !important;
+  background: #fff !important;
+  word-break: break-all !important;
+}
+#crm-collector-panel .crm-status.info    { border-color: #1890ff !important; background: #e6f7ff !important; color: #0958d9 !important; }
+#crm-collector-panel .crm-status.success { border-color: #52c41a !important; background: #f6ffed !important; color: #237804 !important; }
+#crm-collector-panel .crm-status.error   { border-color: #ff4d4f !important; background: #fff2f0 !important; color: #a8071a !important; }
+
+/* ---- Stats ---- */
+#crm-collector-panel .crm-stats {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 10px 16px !important;
+  background: #fff !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+#crm-collector-panel .crm-stats-item { text-align: center !important; }
+#crm-collector-panel .crm-stats-num {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: #ff6b00 !important;
+  line-height: 1 !important;
+}
+#crm-collector-panel .crm-stats-label { font-size: 11px !important; color: #999 !important; margin-top: 3px !important; }
+
+/* ---- Progress ---- */
+#crm-collector-panel .crm-progress-wrapper {
+  padding: 8px 16px !important;
+  background: #fff !important;
+}
+#crm-collector-panel .crm-progress-track {
+  height: 6px !important;
+  background: #f0f0f0 !important;
+  border-radius: 3px !important;
+  overflow: hidden !important;
+}
+#crm-collector-panel .crm-progress-bar {
+  height: 100% !important;
+  background: linear-gradient(90deg, #ff6b00, #ff9500) !important;
+  border-radius: 3px !important;
+  width: 0% !important;
+  transition: width 0.4s ease !important;
+}
+#crm-collector-panel .crm-progress-label {
+  font-size: 11px !important;
+  color: #999 !important;
+  margin-top: 4px !important;
+  text-align: right !important;
+}
+
+/* ---- Buttons ---- */
+#crm-collector-panel .crm-btn-group {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  padding: 10px 16px !important;
+  background: #fff !important;
+}
+#crm-collector-panel .crm-btn-group .crm-btn-full {
+  grid-column: 1 / -1 !important;
+}
+
+#crm-collector-panel button {
+  padding: 8px 12px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  font-weight: 500 !important;
+  transition: all 0.2s !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  font-family: inherit !important;
+}
+#crm-collector-panel button:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+#crm-collector-panel button:not(:disabled):hover {
+  filter: brightness(1.08) !important;
+  transform: translateY(-1px) !important;
+}
+#crm-collector-panel button:not(:disabled):active {
+  transform: translateY(0) !important;
+}
+
+#crm-collector-panel .crm-btn-primary {
+  background: linear-gradient(135deg, #ff6b00, #ff8c00) !important;
+  color: white !important;
+}
+#crm-collector-panel .crm-btn-secondary {
+  background: #f0f5ff !important;
+  color: #1890ff !important;
+  border: 1px solid #d6e4ff !important;
+}
+#crm-collector-panel .crm-btn-danger {
+  background: #fff1f0 !important;
+  color: #ff4d4f !important;
+  border: 1px solid #ffa39e !important;
+}
+#crm-collector-panel .crm-btn-success {
+  background: linear-gradient(135deg, #389e0d, #52c41a) !important;
+  color: white !important;
+}
+#crm-collector-panel .crm-btn-stop {
+  background: #fff7e6 !important;
+  color: #d46b08 !important;
+  border: 1px solid #ffd591 !important;
+}
+
+/* ---- Page Nav ---- */
+#crm-collector-panel .crm-page-nav {
+  display: flex !important;
+  gap: 8px !important;
+  padding: 8px 16px 4px !important;
+  background: #fff !important;
+  border-top: 1px solid #f0f0f0 !important;
+}
+#crm-collector-panel .crm-page-nav button {
+  flex: 1 !important;
+  padding: 7px 10px !important;
+  font-size: 13px !important;
+  background: #f5f5f5 !important;
+  color: #444 !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 6px !important;
+}
+#crm-collector-panel .crm-page-nav button:not(:disabled):hover {
+  background: #fff0e0 !important;
+  border-color: #ff6b00 !important;
+  color: #ff6b00 !important;
+}
+
+/* ---- Log ---- */
+#crm-collector-panel .crm-log-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 8px 16px 4px !important;
+  font-size: 11px !important;
+  color: #999 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+#crm-collector-panel .crm-log-area {
+  height: 130px !important;
+  overflow-y: auto !important;
+  padding: 6px 16px 10px !important;
+  font-size: 11px !important;
+  line-height: 1.8 !important;
+  color: #555 !important;
+  background: #fafafa !important;
+  border-top: 1px solid #f0f0f0 !important;
+}
+#crm-collector-panel .crm-log-area div:first-child { color: #1890ff !important; }
+
+/* ---- Tip ---- */
+#crm-collector-panel .crm-tip {
+  padding: 8px 16px !important;
+  background: #fffbe6 !important;
+  border-top: 1px solid #ffe58f !important;
+  font-size: 11px !important;
+  color: #874d00 !important;
+  line-height: 1.6 !important;
+}
+
+/* ---- Toggle 按钮（浮窗关闭后的唤出按钮）---- */
+#crm-collector-toggle {
+  position: fixed !important;
+  top: 16px !important;
+  right: 16px !important;
+  z-index: 2147483646 !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background: linear-gradient(135deg, #ff6b00, #ff9500) !important;
+  color: white !important;
+  font-size: 22px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 16px rgba(255,107,0,0.4) !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s ease !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+}
+#crm-collector-toggle:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 6px 20px rgba(255,107,0,0.5) !important;
+}
+#crm-collector-toggle.crm-toggle-visible {
+  display: flex !important;
+}
+
+/* ---- Batch Area ---- */
+#crm-collector-panel .crm-batch-area {
+  padding: 10px 16px !important;
+  background: #fff !important;
+  border-top: 1px solid #f0f0f0 !important;
+}
+#crm-collector-panel .crm-batch-title {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+  margin-bottom: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+#crm-collector-panel .crm-batch-tip {
+  font-size: 11px !important;
+  color: #d46b08 !important;
+  background: #fff7e6 !important;
+  border: 1px solid #ffe58f !important;
+  border-radius: 6px !important;
+  padding: 6px 10px !important;
+  margin-bottom: 8px !important;
+  line-height: 1.6 !important;
+  word-break: break-all !important;
+}
+#crm-collector-panel .crm-batch-tip b { color: #a8071a !important; }
+#crm-collector-panel .crm-batch-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-bottom: 8px !important;
+}
+#crm-collector-panel .crm-batch-row label {
+  font-size: 12px !important;
+  color: #666 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+#crm-collector-panel .crm-batch-row input[type="number"] {
+  width: 80px !important;
+  padding: 5px 8px !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  font-family: inherit !important;
+  text-align: center !important;
+  outline: none !important;
+  transition: border-color 0.2s !important;
+}
+#crm-collector-panel .crm-batch-row input[type="number"]:focus {
+  border-color: #ff6b00 !important;
+  box-shadow: 0 0 0 2px rgba(255,107,0,0.15) !important;
+}
+#crm-collector-panel .crm-batch-row span {
+  font-size: 12px !important;
+  color: #999 !important;
+}
+#crm-collector-panel .crm-batch-stats {
+  font-size: 11px !important;
+  color: #52c41a !important;
+  margin-top: 4px !important;
+  padding: 4px 8px !important;
+  background: #f6ffed !important;
+  border-radius: 4px !important;
+  border: 1px solid #b7eb8f !important;
+}
+#crm-collector-panel .crm-batch-dedup {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 11px !important;
+  color: #666 !important;
+  margin-top: 6px !important;
+}
+#crm-collector-panel .crm-batch-dedup input[type="checkbox"] {
+  accent-color: #ff6b00 !important;
+  cursor: pointer !important;
+}
+
+/* ---- 滚动条美化 ---- */
+#crm-collector-panel .crm-body::-webkit-scrollbar,
+#crm-collector-panel .crm-log-area::-webkit-scrollbar {
+  width: 5px !important;
+}
+#crm-collector-panel .crm-body::-webkit-scrollbar-track,
+#crm-collector-panel .crm-log-area::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+#crm-collector-panel .crm-body::-webkit-scrollbar-thumb,
+#crm-collector-panel .crm-log-area::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15) !important;
+  border-radius: 3px !important;
+}
